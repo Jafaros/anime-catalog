@@ -6,7 +6,7 @@ import { ObjectId } from 'mongodb';
 import { AppError } from '../errors/app.error';
 import { uploadAnimeImage } from '../middleware/upload.middleware';
 import { animeService } from '../services/anime.service';
-import { deleteAnimeImage, saveAnimeImage } from '../utils/image';
+import { AnimeImages, deleteAnimeImage, saveAnimeImage } from '../utils/image';
 import { animeSchema } from '../schemas/anime.schema';
 
 const router = Router();
@@ -52,16 +52,17 @@ router.get('/:id', async (req, res) => {
 router.post('/', uploadAnimeImage, async (req, res) => {
 	const data = animeSchema.parse(req.body);
 
-	let imageUrl: string = '';
+	let imageUrls: AnimeImages | undefined;
 
 	if (req.file) {
-		imageUrl = await saveAnimeImage(req.file);
+		imageUrls = await saveAnimeImage(req.file);
 	}
 
 	// We'll properly validate/map multipart fields next.
 	const anime = await animeService.createAnime({
 		...data,
-		image_url: imageUrl,
+		image_url: imageUrls?.posterUrl ?? '',
+		backdrop_url: imageUrls?.backdropUrl ?? '',
 	});
 
 	res.status(201).json(anime);
@@ -83,18 +84,26 @@ router.put('/:id', uploadAnimeImage, async (req, res) => {
 	}
 
 	let imageUrl = existingAnime.image_url;
+	let backdropUrl = existingAnime.backdrop_url;
 
 	if (req.file) {
-		imageUrl = await saveAnimeImage(req.file);
+		const imageUrls = await saveAnimeImage(req.file);
+		imageUrl = imageUrls.posterUrl;
+		backdropUrl = imageUrls.backdropUrl;
 	}
 
 	const anime = await animeService.updateAnime(id, {
 		...data,
 		image_url: imageUrl,
+		backdrop_url: backdropUrl,
 	});
 
 	if (req.file && existingAnime.image_url) {
 		await deleteAnimeImage(existingAnime.image_url);
+	}
+
+	if (req.file && existingAnime.backdrop_url) {
+		await deleteAnimeImage(existingAnime.backdrop_url);
 	}
 
 	res.json(anime);
@@ -118,6 +127,10 @@ router.delete('/:id', async (req, res) => {
 
 	if (anime.image_url) {
 		await deleteAnimeImage(anime.image_url);
+	}
+
+	if (anime.backdrop_url) {
+		await deleteAnimeImage(anime.backdrop_url);
 	}
 
 	res.status(204).send();

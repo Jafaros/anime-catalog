@@ -102,6 +102,7 @@ async function seed(): Promise<void> {
 			release_year: 2023,
 			status: 'FINISHED',
 			image_url: '',
+			backdrop_url: '',
 			genre_ids: [genres.adventure, genres.drama, genres.fantasy],
 		},
 		{
@@ -114,6 +115,7 @@ async function seed(): Promise<void> {
 			release_year: 2019,
 			status: 'FINISHED',
 			image_url: '',
+			backdrop_url: '',
 			genre_ids: [genres.comedy, genres.romance],
 		},
 		{
@@ -126,6 +128,7 @@ async function seed(): Promise<void> {
 			release_year: 2019,
 			status: 'FINISHED',
 			image_url: '',
+			backdrop_url: '',
 			genre_ids: [genres.action, genres.adventure, genres.drama],
 		},
 		{
@@ -138,6 +141,7 @@ async function seed(): Promise<void> {
 			release_year: 2024,
 			status: 'FINISHED',
 			image_url: '',
+			backdrop_url: '',
 			genre_ids: [genres.adventure, genres.comedy, genres.fantasy],
 		},
 		{
@@ -150,6 +154,7 @@ async function seed(): Promise<void> {
 			release_year: 2022,
 			status: 'FINISHED',
 			image_url: '',
+			backdrop_url: '',
 			genre_ids: [genres.action, genres.drama],
 		},
 		{
@@ -162,6 +167,7 @@ async function seed(): Promise<void> {
 			release_year: 2006,
 			status: 'FINISHED',
 			image_url: '',
+			backdrop_url: '',
 			genre_ids: [genres.mystery, genres.psychological],
 		},
 		{
@@ -174,6 +180,7 @@ async function seed(): Promise<void> {
 			release_year: 2004,
 			status: 'FINISHED',
 			image_url: '',
+			backdrop_url: '',
 			genre_ids: [genres.drama, genres.mystery, genres.psychological],
 		},
 	]);

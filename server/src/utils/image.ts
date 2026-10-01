@@ -7,25 +7,45 @@ import sharp from 'sharp';
 
 const UPLOAD_DIRECTORY = path.resolve('uploads/anime');
 
+export interface AnimeImages {
+	posterUrl: string;
+	backdropUrl: string;
+}
+
 export async function saveAnimeImage(
 	file: Express.Multer.File,
-): Promise<string> {
-	const filename = `${crypto.randomUUID()}-${Date.now()}.webp`;
-	const filepath = path.join(UPLOAD_DIRECTORY, filename);
+): Promise<AnimeImages> {
+	const id = crypto.randomUUID();
 
-	await sharp(file.buffer)
-		.resize({
-			width: 600,
-			height: 900,
-			fit: 'cover',
-			withoutEnlargement: true,
-		})
-		.webp({
-			quality: 85,
-		})
-		.toFile(filepath);
+	const posterFilename = `${id}-poster.webp`;
+	const backdropFilename = `${id}-backdrop.webp`;
 
-	return `/uploads/anime/${filename}`;
+	await Promise.all([
+		sharp(file.buffer)
+			.resize({
+				width: 600,
+				height: 900,
+				fit: 'cover',
+				withoutEnlargement: true,
+			})
+			.webp({ quality: 85 })
+			.toFile(path.join(UPLOAD_DIRECTORY, posterFilename)),
+
+		sharp(file.buffer)
+			.resize({
+				width: 1600,
+				height: 600,
+				fit: 'cover',
+				withoutEnlargement: true,
+			})
+			.webp({ quality: 80 })
+			.toFile(path.join(UPLOAD_DIRECTORY, backdropFilename)),
+	]);
+
+	return {
+		posterUrl: `/uploads/anime/${posterFilename}`,
+		backdropUrl: `/uploads/anime/${backdropFilename}`,
+	};
 }
 
 export async function deleteAnimeImage(imageUrl: string): Promise<void> {

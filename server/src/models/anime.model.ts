@@ -20,5 +20,6 @@ export interface Anime {
 	release_year: number;
 	status: AnimeStatus;
 	image_url: string;
+	backdrop_url: string;
 	genre_ids: ObjectId[];
 }
