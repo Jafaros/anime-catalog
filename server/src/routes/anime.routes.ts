@@ -7,6 +7,7 @@ import { AppError } from '../errors/app.error';
 import { uploadAnimeImage } from '../middleware/upload.middleware';
 import { animeService } from '../services/anime.service';
 import { deleteAnimeImage, saveAnimeImage } from '../utils/image';
+import { animeSchema } from '../schemas/anime.schema';
 
 const router = Router();
 
@@ -49,7 +50,9 @@ router.get('/:id', async (req, res) => {
 
 // POST /api/anime
 router.post('/', uploadAnimeImage, async (req, res) => {
-	let imageUrl: string | undefined;
+	const data = animeSchema.parse(req.body);
+
+	let imageUrl: string = '';
 
 	if (req.file) {
 		imageUrl = await saveAnimeImage(req.file);
@@ -57,7 +60,7 @@ router.post('/', uploadAnimeImage, async (req, res) => {
 
 	// We'll properly validate/map multipart fields next.
 	const anime = await animeService.createAnime({
-		...req.body,
+		...data,
 		image_url: imageUrl,
 	});
 
@@ -67,6 +70,7 @@ router.post('/', uploadAnimeImage, async (req, res) => {
 // PUT /api/anime/:id
 router.put('/:id', uploadAnimeImage, async (req, res) => {
 	const { id } = req.params as { id: string };
+	const data = animeSchema.parse(req.body);
 
 	if (!ObjectId.isValid(id)) {
 		throw new AppError(400, 'Invalid anime ID.');
@@ -85,7 +89,7 @@ router.put('/:id', uploadAnimeImage, async (req, res) => {
 	}
 
 	const anime = await animeService.updateAnime(id, {
-		...req.body,
+		...data,
 		image_url: imageUrl,
 	});
 
