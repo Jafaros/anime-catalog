@@ -21,3 +21,7 @@ export function getDatabase(): Db {
 
 	return db;
 }
+
+export async function disconnectDatabase(): Promise<void> {
+	await client.close();
+}
