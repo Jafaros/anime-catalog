@@ -20,9 +20,8 @@
 	} = $props();
 
 	async function createAnime(form: AnimeFormData) {
-		const anime = await AnimeApi.create(form);
-
-		await goto(`/anime/${anime._id}`);
+		await AnimeApi.create(form);
+		await goto(`/`);
 	}
 </script>
 

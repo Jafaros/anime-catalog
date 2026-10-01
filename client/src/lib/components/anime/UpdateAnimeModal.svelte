@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { fade, fly } from 'svelte/transition';
 	import { X } from '@lucide/svelte';
-	import { invalidate } from '$app/navigation';
+	import { goto } from '$app/navigation';
 
 	import AnimeForm from './AnimeForm.svelte';
 	import { AnimeApi } from '#lib/api/anime.api.ts';
@@ -21,10 +21,8 @@
 	} = $props();
 
 	async function updateAnime(form: AnimeFormData) {
-		const updatedAnime = await AnimeApi.update(anime._id, form);
-
-		await invalidate(`anime:${updatedAnime._id}`);
-		onclose();
+		await AnimeApi.update(anime._id, form);
+		await goto('/');
 	}
 </script>
 
