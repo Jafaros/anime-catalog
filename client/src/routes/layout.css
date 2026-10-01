@@ -1,3 +1,41 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
+
+@import 'tailwindcss';
+
+@theme {
+	--color-background: #080b12;
+	--color-surface: #0d121c;
+	--color-card: #121927;
+	--color-card-hover: #172235;
+	--color-border: #1e2a3d;
+
+	--color-foreground: #f1f5f9;
+	--color-muted: #94a3b8;
+	--color-subtle: #64748b;
+
+	--color-primary: #3b82f6;
+	--color-primary-hover: #60a5fa;
+	--color-primary-deep: #2563eb;
+	--color-primary-subtle: #172554;
+
+	--color-danger: #a10808;
+}
+
+@font-face {
+	font-family: 'Google Sans Flex';
+	src: url('/fonts/google-sans-flex.ttf') format('truetype');
+	font-weight: 100 900;
+	font-style: normal;
+	font-display: swap;
+}
+
+body {
+	font-family: 'Google Sans Flex', sans-serif;
+	@apply bg-background text-foreground;
+}
+
+.container {
+	@apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+}

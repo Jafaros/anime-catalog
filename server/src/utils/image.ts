@@ -15,6 +15,8 @@ export interface AnimeImages {
 export async function saveAnimeImage(
 	file: Express.Multer.File,
 ): Promise<AnimeImages> {
+	await fs.mkdir(UPLOAD_DIRECTORY, { recursive: true });
+
 	const id = crypto.randomUUID();
 
 	const posterFilename = `${id}-poster.webp`;
