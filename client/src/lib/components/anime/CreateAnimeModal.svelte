@@ -21,6 +21,7 @@
 
 	async function createAnime(form: AnimeFormData) {
 		await AnimeApi.create(form);
+		onclose();
 		await goto(`/`, { refreshAll: true });
 	}
 </script>

@@ -21,10 +21,10 @@ export class AnimeApi {
 		return response.json();
 	}
 
-	public static async search(query: string, fn?: typeof fetch): Promise<Anime[]> {
-		const response = fn
-			? await fn(`/api/anime/search?query=${encodeURIComponent(query)}`)
-			: await fetch(`/api/anime/search?query=${encodeURIComponent(query)}`);
+	public static async search(query: string, signal?: AbortSignal): Promise<Anime[]> {
+		const response = await fetch(`/api/anime/search?query=${encodeURIComponent(query)}`, {
+			signal
+		});
 
 		if (!response.ok) {
 			throw new Error('Failed to search anime.');

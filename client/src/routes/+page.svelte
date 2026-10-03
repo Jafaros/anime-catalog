@@ -1,4 +1,5 @@
 <script lang="ts">
+	import AnimeSearch from '#lib/components/anime/AnimeSearch.svelte';
 	import { onMount } from 'svelte';
 
 	const { data } = $props();
@@ -14,6 +15,10 @@
 	<title>Anime Catalog</title>
 	<meta name="description" content="A catalog of anime titles." />
 </svelte:head>
+
+<div class="mx-auto w-full max-w-xl py-4">
+	<AnimeSearch />
+</div>
 
 {#if loading}
 	<p>Loading...</p>

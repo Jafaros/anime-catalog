@@ -23,6 +23,7 @@
 
 		try {
 			await AnimeApi.delete(anime._id);
+			onclose();
 			await goto('/', { refreshAll: true });
 		} finally {
 			deleting = false;

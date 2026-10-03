@@ -58,9 +58,20 @@
 				<div class="mb-4 flex flex-wrap items-center gap-3">
 					{#each animeGenres() as genre (genre._id)}
 						<span
-							class="rounded-md border border-primary px-2 py-1 text-xs font-semibold text-primary"
-							>{genre.name}</span
+							class="group relative inline-flex cursor-default rounded-md border border-primary px-2 py-1 text-xs font-semibold text-primary"
 						>
+							{genre.name}
+
+							<span
+								class="pointer-events-none absolute top-full left-1/2 z-50 mt-2 w-64
+										-translate-x-1/2 rounded-lg border border-border bg-neutral-900
+										px-3 py-2 text-xs leading-relaxed font-normal text-foreground
+										opacity-0 shadow-xl transition-all duration-150
+										group-hover:translate-y-0 group-hover:opacity-100"
+							>
+								{genre.description}
+							</span>
+						</span>
 					{/each}
 				</div>
 			{/if}
