@@ -22,7 +22,7 @@
 
 	async function updateAnime(form: AnimeFormData) {
 		await AnimeApi.update(anime._id, form);
-		await goto('/');
+		await goto('/', { refreshAll: true });
 	}
 </script>
 

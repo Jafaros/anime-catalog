@@ -2,6 +2,7 @@
 	import type { Anime, AnimeFormat, AnimeFormData, AnimeStatus } from '#lib/models/anime.ts';
 	import type { Genre } from '#lib/models/genre.ts';
 	import { ImageUp } from '@lucide/svelte';
+	import { untrack } from 'svelte';
 
 	let {
 		anime,
@@ -13,15 +14,30 @@
 		onsubmit: (data: AnimeFormData) => Promise<void>;
 	} = $props();
 
-	let title = $state(anime?.title ?? '');
-	let englishTitle = $state(anime?.english_title ?? '');
-	let description = $state(anime?.description ?? '');
-	let episodes = $state(anime?.episodes ?? 1);
-	let format = $state<AnimeFormat>(anime?.format ?? 'TV');
-	let releaseYear = $state(anime?.release_year ?? new Date().getFullYear());
-	let status = $state<AnimeStatus>(anime?.status ?? 'FINISHED');
-	let genreIds = $state<string[]>(anime?.genre_ids ?? []);
+	let title = $state('');
+	let englishTitle = $state('');
+	let description = $state('');
+	let episodes = $state(1);
+	let format = $state<AnimeFormat>('TV');
+	let releaseYear = $state(new Date().getFullYear());
+	let status = $state<AnimeStatus>('FINISHED');
+	let genreIds = $state<string[]>([]);
 	let image = $state<File>();
+
+	$effect(() => {
+		const currentAnime = anime;
+
+		untrack(() => {
+			title = currentAnime?.title ?? '';
+			englishTitle = currentAnime?.english_title ?? '';
+			description = currentAnime?.description ?? '';
+			episodes = currentAnime?.episodes ?? 1;
+			format = currentAnime?.format ?? 'TV';
+			releaseYear = currentAnime?.release_year ?? new Date().getFullYear();
+			status = currentAnime?.status ?? 'FINISHED';
+			genreIds = currentAnime?.genre_ids ? [...currentAnime.genre_ids] : [];
+		});
+	});
 
 	let submitting = $state(false);
 
@@ -135,7 +151,9 @@
 	</div>
 
 	<div>
-		<label class="mb-2 block text-sm font-medium text-foreground"> Genres </label>
+		<label for="genre" id="genre" class="mb-2 block text-sm font-medium text-foreground">
+			Genres
+		</label>
 
 		<div class="flex flex-wrap gap-2">
 			{#each genres as genre (genre._id)}
@@ -160,7 +178,7 @@
 	</div>
 
 	<div>
-		<label class="mb-2 block text-sm font-medium text-foreground"> Poster </label>
+		<label for="image" class="mb-2 block text-sm font-medium text-foreground"> Poster </label>
 
 		<label
 			for="image"
